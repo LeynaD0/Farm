@@ -27,6 +27,8 @@ public class GameController : MonoBehaviour
     [SerializeField]
     GameObject menuCreateMode;
 
+    GameObject camara;
+
     private void Start()
     {
         LeanTween.moveLocalX(menuCreateMode, 1111f, 0f);
@@ -42,17 +44,6 @@ public class GameController : MonoBehaviour
             case Modos.EnEspera:
                 modo = Modos.EnEspera;
                 break;
-            case Modos.MoverCamara:
-                MoverCamara();
-                break;
-            case Modos.SoltarObjeto:
-                SoltarObjetoCreado();
-                MoverObjetoCreado();
-                break;
-            case Modos.EsperaTrasCrear:
-                modo = Modos.MoverObjeto;
-                break;
-
         }
     }
 
@@ -80,36 +71,6 @@ public class GameController : MonoBehaviour
         LeanTween.moveLocalX(menuCreateMode, 1111f, 0.5f);
         LeanTween.moveLocalY(menu, -400f, 1f);
         modo = Modos.EnEspera;
-    }
-
-    void MoverObjetoCreado()
-    {
-        Ray rayo = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-        objetoSeleccionado.SetActive(false);
-        if (Physics.Raycast(rayo, out hit))
-        {
-            objetoSeleccionado.transform.position = hit.point + ((Vector3.up * objetoSeleccionado.transform.localScale.y) / 2);
-        }
-        objetoSeleccionado.SetActive(true);
-
-        if (Input.GetMouseButtonUp(0))
-        {
-            modo = Modos.SoltarObjeto;
-        }
-    }
-
-    void SoltarObjetoCreado()
-    {
-        objetoSeleccionado = null;
-        modo = Modos.EnEspera;
-    }
-    void MoverCamara()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            Vector3 pos = Input.mousePosition;
-        }
     }
     public void CrearObjecto(GameObject objectoACrear)
     {
